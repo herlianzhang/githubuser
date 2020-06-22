@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="model"
             type="com.latihangoding.githubuserapp.model.UserModel" />
@@ -15,24 +16,46 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/rvItem"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="12dp"
+            app:avatarImage="@{model}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@{model.avatar}"
             tools:src="@tools:sample/avatars" />
 
-        <TextView
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="@{model.name}"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@id/rvItem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/rvItem"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="@tools:sample/full_names" />
+            app:layout_constraintTop_toTopOf="@id/rvItem"
+            android:layout_marginHorizontal="20dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{model.name}"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="@tools:sample/full_names" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{model.company}"
+                android:textSize="16sp"
+                tools:text="@tools:sample/full_names" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{model.location}"
+                android:textSize="16sp"
+                tools:text="@tools:sample/full_names" />
+        </LinearLayout>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
