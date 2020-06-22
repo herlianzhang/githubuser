@@ -1,26 +1,15 @@
 package com.latihangoding.githubuserapp
 
 import android.animation.Animator
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
-import android.util.AttributeSet
-import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.ParcelableCompatCreatorCallbacks
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.gson.Gson
 import com.latihangoding.githubuserapp.databinding.ActivityMainBinding
 import com.latihangoding.githubuserapp.list.ListActivity
 import com.latihangoding.githubuserapp.model.GithubModel
-import kotlinx.android.synthetic.main.activity_main.*
-import java.io.IOException
-import java.io.InputStream
 
 class MainActivity : AppCompatActivity() {
 
@@ -62,6 +51,7 @@ class MainActivity : AppCompatActivity() {
 
     fun pushToList() {
         val intent = Intent(this@MainActivity, ListActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         intent.putExtra(ListActivity.userData, mainViewModel.githubModel)
         startActivity(intent)
     }

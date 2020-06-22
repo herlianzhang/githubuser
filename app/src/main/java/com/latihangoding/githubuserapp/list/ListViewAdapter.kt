@@ -1,6 +1,7 @@
 package com.latihangoding.githubuserapp.list
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -9,20 +10,24 @@ import com.latihangoding.githubuserapp.databinding.ListItemBinding
 import com.latihangoding.githubuserapp.model.UserModel
 
 
-class ListViewAdapter : ListAdapter<UserModel, ListViewAdapter.ViewHolder>(ListDiffCallBack()) {
+class ListViewAdapter(private val onClickListener: OnClickListener) : ListAdapter<UserModel, ListViewAdapter.ViewHolder>(ListDiffCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder.from(parent)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item, onClickListener)
     }
 
     class ViewHolder private constructor(val binding: ListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: UserModel) {
+        fun bind(item: UserModel, onClickListener: OnClickListener) {
             binding.model = item
             binding.executePendingBindings()
+            binding.root.setOnClickListener {
+                val pair: Pair<View, String> = Pair(binding.ciAvatar, binding.ciAvatar.transitionName)
+                onClickListener.onListClick(item, pair)
+            }
         }
 
         companion object {
@@ -33,6 +38,10 @@ class ListViewAdapter : ListAdapter<UserModel, ListViewAdapter.ViewHolder>(ListD
                 return ViewHolder(binding)
             }
         }
+    }
+
+    interface OnClickListener {
+        fun onListClick(model: UserModel, pair: Pair<View, String>)
     }
 }
 

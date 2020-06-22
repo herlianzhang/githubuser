@@ -1,28 +1,26 @@
 package com.latihangoding.githubuserapp.list
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
-import android.service.autofill.UserData
-import android.util.Log
-import android.view.KeyEvent
+import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.ListView
-import android.widget.TextView
+import androidx.core.app.ActivityOptionsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.latihangoding.githubuserapp.R
 import com.latihangoding.githubuserapp.databinding.ActivityListBinding
+import com.latihangoding.githubuserapp.detail.DetailActivity
 import com.latihangoding.githubuserapp.model.GithubModel
 import com.latihangoding.githubuserapp.model.UserModel
 
-class ListActivity : AppCompatActivity() {
+class ListActivity : AppCompatActivity(), ListViewAdapter.OnClickListener {
 
     companion object {
         val userData = "USER_DATA"
     }
-    lateinit var data: List<UserModel>
 
     lateinit var binding: ActivityListBinding
     lateinit var viewModel: ListViewModel
@@ -33,10 +31,9 @@ class ListActivity : AppCompatActivity() {
         val githubData = intent.getParcelableExtra(userData) as GithubModel
         val viewModelFactory = ListViewModelFactory(githubData.users)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ListViewModel::class.java)
-        Log.d("masukpakeko", "${githubData.users}")
         binding.setLifecycleOwner(this)
 
-        val adapter = ListViewAdapter()
+        val adapter = ListViewAdapter(this)
         binding.rvMain.adapter = adapter
 
         binding.ivSearch.setOnClickListener {
@@ -60,5 +57,12 @@ class ListActivity : AppCompatActivity() {
     private fun searchName() {
         viewModel.showData(binding.etSearch.text.toString())
         binding.rvMain.smoothScrollToPosition(0)
+    }
+
+    override fun onListClick(model: UserModel, pair: Pair<View, String>) {
+        val optionCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this, pair.first, pair.second)
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra(userData, model as Parcelable)
+        startActivity(intent, optionCompat.toBundle())
     }
 }
