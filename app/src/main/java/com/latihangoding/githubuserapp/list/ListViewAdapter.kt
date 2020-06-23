@@ -20,7 +20,7 @@ class ListViewAdapter(private val onClickListener: OnClickListener) : ListAdapte
         holder.bind(item, onClickListener)
     }
 
-    class ViewHolder private constructor(val binding: ListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder private constructor(private val binding: ListItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: UserModel, onClickListener: OnClickListener) {
             binding.model = item
             binding.executePendingBindings()
@@ -45,7 +45,7 @@ class ListViewAdapter(private val onClickListener: OnClickListener) : ListAdapte
     }
 }
 
-class ListDiffCallBack() : DiffUtil.ItemCallback<UserModel>() {
+class ListDiffCallBack : DiffUtil.ItemCallback<UserModel>() {
     override fun areItemsTheSame(oldItem: UserModel, newItem: UserModel): Boolean {
         return oldItem.username == newItem.username
     }

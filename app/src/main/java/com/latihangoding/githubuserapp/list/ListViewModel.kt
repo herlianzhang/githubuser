@@ -7,7 +7,7 @@ import com.latihangoding.githubuserapp.model.UserModel
 
 class ListViewModel(data: List<UserModel>) : ViewModel() {
 
-    val data: List<UserModel>?
+    private val data: List<UserModel>?
     private val _usersModel = MutableLiveData<List<UserModel>>()
     val usersModel: LiveData<List<UserModel>>
         get() = _usersModel

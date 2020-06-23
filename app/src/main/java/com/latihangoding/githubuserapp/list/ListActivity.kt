@@ -18,20 +18,18 @@ import com.latihangoding.githubuserapp.model.UserModel
 
 class ListActivity : AppCompatActivity(), ListViewAdapter.OnClickListener {
 
-    companion object {
-        val userData = "USER_DATA"
-    }
 
-    lateinit var binding: ActivityListBinding
-    lateinit var viewModel: ListViewModel
+
+    private lateinit var binding: ActivityListBinding
+    private lateinit var viewModel: ListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_list)
-        val githubData = intent.getParcelableExtra(userData) as GithubModel
+        val githubData = intent.getParcelableExtra(USER_DATA) as GithubModel
         val viewModelFactory = ListViewModelFactory(githubData.users)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ListViewModel::class.java)
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
 
         val adapter = ListViewAdapter(this)
         binding.rvMain.adapter = adapter
@@ -62,7 +60,11 @@ class ListActivity : AppCompatActivity(), ListViewAdapter.OnClickListener {
     override fun onListClick(model: UserModel, pair: Pair<View, String>) {
         val optionCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this, pair.first, pair.second)
         val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra(userData, model as Parcelable)
+        intent.putExtra(USER_DATA, model as Parcelable)
         startActivity(intent, optionCompat.toBundle())
+    }
+
+    companion object {
+        const val USER_DATA = "USER_DATA"
     }
 }

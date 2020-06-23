@@ -22,13 +22,13 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
 
         getData()
         playAnimation()
     }
 
-    fun playAnimation() {
+    private fun playAnimation() {
         binding.animationView.playAnimation()
         binding.animationView.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(animation: Animator?) {
@@ -49,14 +49,14 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun pushToList() {
+    private fun pushToList() {
         val intent = Intent(this@MainActivity, ListActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        intent.putExtra(ListActivity.userData, mainViewModel.githubModel)
+        intent.putExtra(ListActivity.USER_DATA, mainViewModel.githubModel)
         startActivity(intent)
     }
 
-    fun getData() {
+    private fun getData() {
         val myJson = mainViewModel.inputStreamToString(resources.openRawResource(R.raw.githubuser))
         mainViewModel.githubModel = Gson().fromJson(myJson, GithubModel::class.java)
     }
